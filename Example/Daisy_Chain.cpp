@@ -23,10 +23,10 @@ void loop() {
    delay(1000);
    DAC525.SetVoltage_Daisy(4,1);  // Set DAC channel A on DAC_1 to one volt
    delay(1000); 
-   DAC525.SetVoltage_Daisy(5,2);  // Set DAC channel B on DAC_0 to one volt
+   DAC525.SetVoltage_Daisy(5,1);  // Set DAC channel B on DAC_0 to one volt
    delay(1000); 
-   DAC525.SetVoltage_Daisy(6,2);  // Set DAC channel C on DAC_0 to one volt
+   DAC525.SetVoltage_Daisy(6,1);  // Set DAC channel C on DAC_0 to one volt
    delay(1000); 
-   DAC525.SetVoltage_Daisy(5,2);  // Set DAC channel D on DAC_0 to one volt
+   DAC525.SetVoltage_Daisy(7,1);  // Set DAC channel D on DAC_0 to one volt
    delay(1000); 
 }
