@@ -11,7 +11,7 @@ public:
     MAX525(SPIClass &bus, uint8_t csPin);
     int begin();
     int begin_Daisy();
-    int SetVoltage(int DAC_x, float Voltage);
+    int SetVoltage(uint8_t DAC_x, float Voltage);
     int SetVoltage_Daisy(int DAC_x, float Voltage);
 
     // Serial-Interface Programming Commands
@@ -45,7 +45,8 @@ protected:
 private:
     uint16_t _DAC_OLD[8] = {0x00};        // Storing old voltage values for DAC (only needed for daisy-chain configuration)
     float _VoltageReference = 3.3;        // 3.3 Volt
-    float _DAC_Gain = 1.515;              // Feedback gain non-inverting (1 + R2/R1)
+    //float _DAC_Gain = 1.5;              // Feedback gain non-inverting (1 + 5k/10k)
+    float _DAC_Gain = 3;                  // Feedback gain non-inverting (1 + 10k/5k)
     uint16_t _GetReference(float Voltage);// Calculate the voltage reference for the DACs
 };
 
