@@ -13,6 +13,8 @@ public:
     int begin_Daisy();
     int SetVoltage(uint8_t DAC_x, float Voltage);
     int SetVoltage_Daisy(int DAC_x, float Voltage);
+    void SetDACFeedbackGain(float gain);
+
 
     // Serial-Interface Programming Commands
     const uint16_t LIR_A_UNC = 0x1000; // Load input register A; DAC registers unchanged.
@@ -39,7 +41,7 @@ protected:
     SPIClass *_spi;
     uint8_t _csPin;
     bool _useSPI;
-    const uint32_t _SCLK = 10000000;      // 10 MHz
+    const uint32_t _SCLK = 5000000;      // 5 MHz
     
 
 private:

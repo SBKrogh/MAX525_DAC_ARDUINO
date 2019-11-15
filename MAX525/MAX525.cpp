@@ -83,7 +83,9 @@ int MAX525::SetVoltage(uint8_t DAC_x, float Voltage)
 
 /*  Write two bytes to MAX525 registers. 4 address/control bits and 12 data bits.
     DAC_x can take values between 0 - 7 corrosponding to the 8 channels on the DACs'.
-    This only works in a two stage daisy-chain configuration. */
+    This only works in a two stage daisy-chain configuration. 
+    This code is configured to the Exo-Aider PCB V0 layout in a fasion such the pin header is in a cronological 
+    order. Henceforth, the actual DAC channel, e.g [1,2,3,4], do not match with the PCB pin header [1,2,3,4]*/
 int MAX525::SetVoltage_Daisy(int DAC_x, float Voltage)
 {   
     _spi->beginTransaction(SPISettings(_SCLK, MSBFIRST, SPI_MODE0)); // begin the transaction
@@ -91,79 +93,79 @@ int MAX525::SetVoltage_Daisy(int DAC_x, float Voltage)
 
     switch (DAC_x)
     {
-    case 0:
-        Serial.println("DAC A0");
-        _spi->transfer16(LIR_A_UP | _DAC_OLD[DAC_x + 4]);
-        _spi->transfer16(LIR_A_UP | _GetReference(Voltage));
+    case 0: // pin header 1
+        //Serial.println("DAC A0");
+        _spi->transfer16(LIR_A_UP | _DAC_OLD[DAC_x + 4]);    // daisy chain - set register for DAC two to present voltage value.
+        _spi->transfer16(LIR_A_UP | _GetReference(Voltage)); // daisy chain - set register for DAC one to new voltage value.
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         _DAC_OLD[DAC_x] = _GetReference(Voltage);
         break;
-    case 1:
-        Serial.println("DAC B0");
-        _spi->transfer16(LIR_B_UP | _DAC_OLD[DAC_x + 4]);
-        _spi->transfer16(LIR_B_UP | _GetReference(Voltage));
+    case 1: // pin header 2
+        //Serial.println("DAC B0");
+        _spi->transfer16(LIR_D_UP | _DAC_OLD[DAC_x + 4]);    // daisy chain - set register for DAC two to present voltage value.
+        _spi->transfer16(LIR_D_UP | _GetReference(Voltage)); // daisy chain - set register for DAC one to new voltage value.
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         _DAC_OLD[DAC_x] = _GetReference(Voltage);
         break;
-    case 2:
-        Serial.println("DAC C0");
-        _spi->transfer16(LIR_C_UP | _DAC_OLD[DAC_x + 4]);
-        _spi->transfer16(LIR_C_UP | _GetReference(Voltage));
+    case 2: // pin header 3
+        //Serial.println("DAC C0");
+        _spi->transfer16(LIR_B_UP | _DAC_OLD[DAC_x + 4]);    // daisy chain - set register for DAC two to present voltage value.
+        _spi->transfer16(LIR_B_UP | _GetReference(Voltage)); // daisy chain - set register for DAC one to new voltage value.
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         _DAC_OLD[DAC_x] = _GetReference(Voltage);
         break;
-    case 3:
-        Serial.println("DAC D0");
-        _spi->transfer16(LIR_D_UP | _DAC_OLD[DAC_x + 4]);
-        _spi->transfer16(LIR_D_UP | _GetReference(Voltage));
+    case 3: // pin header 4
+        //Serial.println("DAC D0");
+        _spi->transfer16(LIR_C_UP | _DAC_OLD[DAC_x + 4]);    // daisy chain - set register for DAC two to present voltage value.
+        _spi->transfer16(LIR_C_UP | _GetReference(Voltage)); // daisy chain - set register for DAC one to new voltage value.
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         _DAC_OLD[DAC_x] = _GetReference(Voltage);
         break;
-    case 4:
-        Serial.println("DAC A1");
-        _spi->transfer16(LIR_A_UP | _GetReference(Voltage));
-        _spi->transfer16(LIR_A_UP | _DAC_OLD[DAC_x - 4]);
+    case 4: // pin header 4
+        //Serial.println("DAC A1");
+        _spi->transfer16(LIR_A_UP | _GetReference(Voltage)); // daisy chain - set register for DAC two to new voltage value.
+        _spi->transfer16(LIR_A_UP | _DAC_OLD[DAC_x - 4]);    // daisy chain - set register for DAC one to present voltage value.
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         _DAC_OLD[DAC_x] = _GetReference(Voltage);
         break;
-    case 5:
-        Serial.println("DAC B1");
-        _spi->transfer16(LIR_B_UP | _GetReference(Voltage));
-        _spi->transfer16(LIR_B_UP | _DAC_OLD[DAC_x - 4]);
+    case 5: // pin header 5
+        //Serial.println("DAC B1");
+        _spi->transfer16(LIR_D_UP | _GetReference(Voltage)); // daisy chain - set register for DAC two to new voltage value.
+        _spi->transfer16(LIR_D_UP | _DAC_OLD[DAC_x - 4]);    // daisy chain - set register for DAC one to present voltage value.
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         _DAC_OLD[DAC_x] = _GetReference(Voltage);
         break;
-    case 6:
-        Serial.println("DAC C1");
-        _spi->transfer16(LIR_C_UP | _GetReference(Voltage));
-        _spi->transfer16(LIR_C_UP | _DAC_OLD[DAC_x - 4]);
+    case 6: // pin header 6
+        //Serial.println("DAC C1");
+        _spi->transfer16(LIR_B_UP | _GetReference(Voltage)); // daisy chain - set register for DAC two to new voltage value.
+        _spi->transfer16(LIR_B_UP | _DAC_OLD[DAC_x - 4]);    // daisy chain - set register for DAC one to present voltage value.
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         _DAC_OLD[DAC_x] = _GetReference(Voltage);
         break;
-    case 7:
-        Serial.println("DAC D1");
-        _spi->transfer16(LIR_D_UP | _GetReference(Voltage));
-        _spi->transfer16(LIR_D_UP | _DAC_OLD[DAC_x - 4]);
+    case 7: // pin header 7
+        //Serial.println("DAC D1");
+        _spi->transfer16(LIR_C_UP | _GetReference(Voltage)); // daisy chain - set register for DAC two to new voltage value.
+        _spi->transfer16(LIR_C_UP | _DAC_OLD[DAC_x - 4]);    // daisy chain - set register for DAC two to present voltage value.
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         _DAC_OLD[DAC_x] = _GetReference(Voltage);
         break;
     default:
+        _spi->endTransaction();
         return -1;
     }
-    
 }
 
 /*  Calculates the voltage reference for the DAC.*/
 uint16_t MAX525::_GetReference(float Voltage){
-    uint16_t reference = reference = ( Voltage/(_VoltageReference*_DAC_Gain) ) * 4096; 
+    uint16_t reference = ( Voltage/(_VoltageReference*_DAC_Gain) ) * 4096; 
     if(reference < 0){
         reference = 0;
     }
@@ -173,4 +175,9 @@ uint16_t MAX525::_GetReference(float Voltage){
     }
     
     return reference;
+}
+
+/* Set the noninverting feedback gain of the DAC.*/
+void MAX525::SetDACFeedbackGain(float gain){
+    _DAC_Gain = gain;
 }
