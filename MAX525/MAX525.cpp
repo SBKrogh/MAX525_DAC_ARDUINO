@@ -31,13 +31,6 @@ int MAX525::begin_Daisy()
     _spi->begin();
     delay(50);
     for (size_t i = 0; i < 8; i++){SetVoltage_Daisy(i,0); delay(10);} // set all channels to zero 
-    
-    // _spi->beginTransaction(SPISettings(_SCLK, MSBFIRST, SPI_MODE0)); // begin the transaction
-    // digitalWrite(_csPin, LOW);
-    // _spi->transfer16(Update_All_DAC_Reg);
-    // _spi->transfer16(Update_All_DAC_Reg);
-    // digitalWrite(_csPin, HIGH);
-    // _spi->endTransaction();    
     return 1;
 }
 
@@ -59,19 +52,19 @@ int MAX525::SetVoltage(uint8_t DAC_x, float Voltage)
         break;
     case 1:
         //Serial.println("DAC B");
-        _spi->transfer16(LIR_B_UP | _GetReference(Voltage));
+        _spi->transfer16(LIR_D_UP | _GetReference(Voltage));
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         break;
     case 2:
         //Serial.println("DAC C");
-        _spi->transfer16(LIR_C_UP | _GetReference(Voltage));
+        _spi->transfer16(LIR_B_UP | _GetReference(Voltage));
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         break;
     case 3:
         //Serial.println("DAC D");
-        _spi->transfer16(LIR_D_UP | _GetReference(Voltage));
+        _spi->transfer16(LIR_C_UP | _GetReference(Voltage));
         digitalWrite(_csPin, HIGH);
         _spi->endTransaction();
         break;
@@ -79,6 +72,7 @@ int MAX525::SetVoltage(uint8_t DAC_x, float Voltage)
         _spi->endTransaction();
         return -1;
     }
+    return 1;
 }
 
 /*  Write two bytes to MAX525 registers. 4 address/control bits and 12 data bits.
@@ -161,6 +155,7 @@ int MAX525::SetVoltage_Daisy(int DAC_x, float Voltage)
         _spi->endTransaction();
         return -1;
     }
+    return 1;
 }
 
 /*  Calculates the voltage reference for the DAC.*/
